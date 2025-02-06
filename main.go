@@ -56,6 +56,7 @@ func main() {
 	uid := flag.String("uid", "", "User ID")
 	ak := flag.String("ak", "", "AccessKey ID")
 	secret := flag.String("secret", "", "AccessKey Secret")
+	endpoint := flag.String("endpoint", "/dns-query", "DoH Endpoint")
 	port := flag.String("port", "8080", "Port to listen")
 	flag.Parse()
 
@@ -64,7 +65,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	http.HandleFunc("/dns-query", forwardDNSRequest(*uid, *ak, *secret))
-	fmt.Println("Server is running on port: " + *port)
+	http.HandleFunc(*endpoint, forwardDNSRequest(*uid, *ak, *secret))
+	fmt.Println("Server is running on port: " + *port + ". Serving at: " + *endpoint)
 	http.ListenAndServe(":" + *port, nil)
 }
